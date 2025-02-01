@@ -63,7 +63,7 @@ def allocate_portfolio():
     al=list(al)
     allo=[]
     for k, v in allocation.items():
-        allo.append(v)
+        allo.append(float(v))
               
     portfolio_performance=[]
     # Initialize an empty list for portfolio performance
@@ -77,7 +77,6 @@ def allocate_portfolio():
         "investment_amount": investment_amount,
         "asset_names": asset_names,  # List of tuples
         "asset_allocation": asset_allocation,
-        "stock_quantities":al,
         "portfolio_performance": portfolio_performance,  # List of tuples
         "leftover_cash": leftover
     }
