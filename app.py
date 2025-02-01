@@ -60,7 +60,7 @@ def allocate_portfolio():
     # Prepare the response, ensuring data is serializable
     response = {
         "investment_amount": investment_amount,
-        "portfolio_performance": portfolio_performance
+        "portfolio_performance": portfolio_performance,
         "leftover_cash": leftover
     }
 
