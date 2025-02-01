@@ -56,13 +56,13 @@ def allocate_portfolio():
 
     # Append each key-value pair from weights as a tuple (key, value)
     for k, v in weights.items():
-        asset_allocation.append((k, float(v)))  
+        asset_allocation.append([k, float(v)])  
 
     # Initialize an empty list for portfolio performance
     portfolio_performance = [
-        ("expected_return", round(expected_return * 100, 2)),
-        ("volatility", round(volatility * 100, 2)),
-        ("sharpe_ratio", round(sharpe_ratio, 2))
+        ["expected_return", round(expected_return * 100, 2)],
+        ["volatility", round(volatility * 100, 2)],
+        ["sharpe_ratio", round(sharpe_ratio, 2)]
     ]
 
 # Prepare response
