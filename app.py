@@ -64,7 +64,7 @@ def allocate_portfolio():
     for k, v in allocation.items():
         allo.append(v)
               
-
+    portfolio_performance=[]
     # Initialize an empty list for portfolio performance
     portfolio_performance.append(expected_return)
     portfolio_performance.append(volatility)
