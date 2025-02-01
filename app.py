@@ -52,16 +52,15 @@ def allocate_portfolio():
     allocation_finder = DiscreteAllocation(weights, latest_prices, total_portfolio_value=investment_amount)
     allocation, leftover = allocation_finder.lp_portfolio()
 
+    portfolio_performance = []
+    portfolio_performance.append(expected_return*100)
+    portfolio_performance.append(volatility*100)
+    portfolio_performance.append(sharpe_ratio)  
+
     # Prepare the response, ensuring data is serializable
     response = {
-        "category": category,
         "investment_amount": investment_amount,
-        "portfolio_performance": {
-            "expected_return": expected_return*100,
-            "volatility": volatility*100,
-            "sharpe_ratio": sharpe_ratio
-        },
-        "stock_quantities": allocation,
+        "portfolio_performance": portfolio_performance
         "leftover_cash": leftover
     }
 
