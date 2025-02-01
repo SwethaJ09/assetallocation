@@ -53,23 +53,29 @@ def allocate_portfolio():
     allocation, leftover = allocation_finder.lp_portfolio()
 
     asset_allocation = []
-
+    asset_names=[]
+    
     # Append each key-value pair from weights as a tuple (key, value)
     for k, v in weights.items():
-        asset_allocation.append([k, float(v)])  
+        asset_names.append(k)
+        asset_allocation.append(v)
+
+    allocation=[]
+    for k, v in allocation.items():
+        allocation.append(v)
+              
 
     # Initialize an empty list for portfolio performance
-    portfolio_performance = [
-        ["expected_return", round(expected_return * 100, 2)],
-        ["volatility", round(volatility * 100, 2)],
-        ["sharpe_ratio", round(sharpe_ratio, 2)]
-    ]
+    portfolio_performance.append(expected_return)
+    portfolio_performance.append(volatility)
+    portfolio_performance.append(sharpe_ratio)
 
 # Prepare response
     response = {
         "category": category,
         "investment_amount": investment_amount,
-        "asset_allocation": asset_allocation,  # List of tuples
+        "asset_names": asset_names,  # List of tuples
+        "asset_names": asset_allocation,
         "portfolio_performance": portfolio_performance,  # List of tuples
         "stock_quantities": allocation,
         "leftover_cash": leftover
