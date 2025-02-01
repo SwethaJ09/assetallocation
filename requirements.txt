@@ -4,3 +4,4 @@ pandas==1.5.2
 matplotlib==3.6.3
 scipy==1.9.3
 numpy==1.23.5
+gunicorn
