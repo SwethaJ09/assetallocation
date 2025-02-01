@@ -47,7 +47,7 @@ def allocate_portfolio():
 
 
     
-    print("Available columns:", prices_df.columns)
+   # print("Available columns:", prices_df.columns)
 
     
     if "Adj Close" in prices_df:
@@ -86,14 +86,14 @@ def allocate_portfolio():
         "stock_quantities": allocation,
         "leftover_cash": f"{leftover:.2f}"
     }
-        def convert_to_serializable(obj):
-            if isinstance(obj, pd.DataFrame):
-                return obj.applymap(lambda x: int(x) if isinstance(x, pd.Int64Dtype) else x).to_dict(orient="records")
-            if isinstance(obj, pd.Series):
-                return obj.apply(lambda x: int(x) if isinstance(x, pd.Int64Dtype) else x).to_dict()
-            if isinstance(obj, pd.Timestamp):
-                return obj.isoformat()  # If it's a date
-            return obj
+    def convert_to_serializable(obj):
+        if isinstance(obj, pd.DataFrame):
+            return obj.applymap(lambda x: int(x) if isinstance(x, pd.Int64Dtype) else x).to_dict(orient="records")
+        if isinstance(obj, pd.Series):
+            return obj.apply(lambda x: int(x) if isinstance(x, pd.Int64Dtype) else x).to_dict()
+        if isinstance(obj, pd.Timestamp):
+            return obj.isoformat()  # If it's a date
+        return obj
 
     response = convert_to_serializable(response)
     
