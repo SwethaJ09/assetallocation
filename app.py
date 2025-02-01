@@ -56,7 +56,6 @@ def allocate_portfolio():
     response = {
         "category": category,
         "investment_amount": investment_amount,
-        "asset_allocation": {k: float(v) for k, v in weights.items()},  # Convert to regular float
         "portfolio_performance": {
             "expected_return": expected_return*100,
             "volatility": volatility*100,
