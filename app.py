@@ -58,12 +58,12 @@ def allocate_portfolio():
         "investment_amount": investment_amount,
         "asset_allocation": {k: float(v) for k, v in weights.items()},  # Convert to regular float
         "portfolio_performance": {
-            "expected_return": f"{expected_return*100:.2f}%",
-            "volatility": f"{volatility*100:.2f}%",
-            "sharpe_ratio": f"{sharpe_ratio:.2f}"
+            "expected_return": expected_return*100,
+            "volatility": volatility*100,
+            "sharpe_ratio": sharpe_ratio
         },
         "stock_quantities": allocation,
-        "leftover_cash": f"{leftover:.2f}"
+        "leftover_cash": leftover
     }
 
     return jsonify(response)
