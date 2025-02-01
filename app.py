@@ -59,7 +59,8 @@ def allocate_portfolio():
     for k, v in weights.items():
         asset_names.append(k)
         asset_allocation.append(v)
-
+    al=allocation.values()
+    al=list(al)
     allo=[]
     for k, v in allocation.items():
         allo.append(v)
@@ -76,6 +77,7 @@ def allocate_portfolio():
         "investment_amount": investment_amount,
         "asset_names": asset_names,  # List of tuples
         "asset_allocation": asset_allocation,
+        "stock_quantities":al,
         "portfolio_performance": portfolio_performance,  # List of tuples
         "leftover_cash": leftover
     }
