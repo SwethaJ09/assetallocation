@@ -4,13 +4,9 @@ import pandas as pd
 
 from pypfopt.expected_returns import returns_from_prices
 from pypfopt.hierarchical_portfolio import HRPOpt
-from pypfopt.discrete_allocation import (
-    DiscreteAllocation, get_latest_prices
-)
-from pypfopt import plotting
+from pypfopt.discrete_allocation import DiscreteAllocation, get_latest_prices
 
 app = Flask(__name__)
-
 
 STOCK_CATEGORIES = {
     "Aggressive": ["TSLA", "ADANIENT.NS", "TATAMOTORS.NS", "BAJFINANCE.NS", "RELIANCE.NS", 
@@ -26,30 +22,14 @@ def allocate_portfolio():
     category = data.get("category", "Moderate")
     investment_amount = data.get("investment_amount", 50000)
 
-    
     if category not in STOCK_CATEGORIES:
         return jsonify({"error": "Invalid category. Choose from 'Aggressive', 'Moderate', or 'Conservative'."}), 400
 
     assets = STOCK_CATEGORIES[category]
-
     
+    # Fetch stock data from Yahoo Finance
     prices_df = yf.download(assets, start="2023-01-01", end="2023-12-31")
 
-   
-    valid_data = {}
-    for ticker in assets:
-        data = yf.download(ticker, start="2024-01-01", end="2024-12-31")
-        if not data.empty:
-            valid_data[ticker] = data
-        else:
-            print(f"Warning: No data for {ticker}")
-
-
-
-    
-   # print("Available columns:", prices_df.columns)
-
-    
     if "Adj Close" in prices_df:
         prices_df = prices_df["Adj Close"]
     elif "Close" in prices_df:
@@ -57,27 +37,26 @@ def allocate_portfolio():
     else:
         return jsonify({"error": "No 'Adj Close' or 'Close' data available for selected stocks."}), 400
 
-   
     rtn_df = returns_from_prices(prices_df)
 
-    
+    # Portfolio optimization
     hrp = HRPOpt(returns=rtn_df)
     hrp.optimize()
     weights = hrp.clean_weights()
 
-    # Portfolio Performance
+    # Portfolio performance
     expected_return, volatility, sharpe_ratio = hrp.portfolio_performance()
 
-    # Calculate stock allocations
+    # Stock allocations
     latest_prices = get_latest_prices(prices_df)
     allocation_finder = DiscreteAllocation(weights, latest_prices, total_portfolio_value=investment_amount)
     allocation, leftover = allocation_finder.lp_portfolio()
 
-    # Prepare response
+    # Prepare the response, ensuring data is serializable
     response = {
         "category": category,
         "investment_amount": investment_amount,
-        "asset_allocation": weights,
+        "asset_allocation": {k: float(v) for k, v in weights.items()},  # Convert to regular float
         "portfolio_performance": {
             "expected_return": f"{expected_return*100:.2f}%",
             "volatility": f"{volatility*100:.2f}%",
@@ -86,17 +65,7 @@ def allocate_portfolio():
         "stock_quantities": allocation,
         "leftover_cash": f"{leftover:.2f}"
     }
-    def convert_to_serializable(obj):
-        if isinstance(obj, pd.DataFrame):
-            return obj.applymap(lambda x: int(x) if isinstance(x, pd.Int64Dtype) else x).to_dict(orient="records")
-        if isinstance(obj, pd.Series):
-            return obj.apply(lambda x: int(x) if isinstance(x, pd.Int64Dtype) else x).to_dict()
-        if isinstance(obj, pd.Timestamp):
-            return obj.isoformat()  # If it's a date
-        return obj
 
-    response = convert_to_serializable(response)
-    
     return jsonify(response)
 
 if __name__ == "__main__":
