@@ -28,7 +28,7 @@ def allocate_portfolio():
     assets = STOCK_CATEGORIES[category]
     
     # Fetch stock data from Yahoo Finance
-    prices_df = yf.download(assets, start="2023-01-01", end="2023-12-31")
+    prices_df = yf.download(assets, start="2024-01-01", end="2024-12-31")
 
     if "Adj Close" in prices_df:
         prices_df = prices_df["Adj Close"]
@@ -75,9 +75,8 @@ def allocate_portfolio():
         "category": category,
         "investment_amount": investment_amount,
         "asset_names": asset_names,  # List of tuples
-        "asset_names": asset_allocation,
+        "asset_allocation": asset_allocation,
         "portfolio_performance": portfolio_performance,  # List of tuples
-        "stock_quantities": allo,
         "leftover_cash": leftover
     }
 
